@@ -1,5 +1,6 @@
 
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /*
@@ -18,6 +19,13 @@ public class listagemVIEW extends javax.swing.JFrame {
      */
     public listagemVIEW() {
         initComponents();
+         DefaultTableModel modelo = new DefaultTableModel(
+        new Object[][]{},
+        new String[]{"ID", "Nome", "Valor", "Status"}
+    );
+
+    tblProdutos.setModel(modelo);
+        
         listarProdutos();
     }
 
@@ -135,6 +143,10 @@ public class listagemVIEW extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    
+    
+    
+    
     private void btnVenderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVenderActionPerformed
         String id = id_produto_venda.getText();
         
@@ -204,27 +216,37 @@ public class listagemVIEW extends javax.swing.JFrame {
    
 private void listarProdutos() {
 
-    ProdutosDAO produtosdao = new ProdutosDAO();
+        try {
 
-    DefaultTableModel model =
-        (DefaultTableModel) tblProdutos.getModel();
+            ProdutosDAO produtosdao = new ProdutosDAO();
 
-    model.setNumRows(0);
+            DefaultTableModel model =
+                (DefaultTableModel) tblProdutos.getModel();
 
-    ArrayList<ProdutosDTO> listagem =
-        produtosdao.listarProdutos();
+            model.setNumRows(0);
 
-    for (int i = 0; i < listagem.size(); i++) {
+            ArrayList<ProdutosDTO> listagem =
+                produtosdao.listarProdutos();
 
-        model.addRow(new Object[]{
+            for (int i = 0; i < listagem.size(); i++) {
 
-            listagem.get(i).getId(),
-            listagem.get(i).getNome(),
-            listagem.get(i).getValor(),
-            listagem.get(i).getStatus()
+                model.addRow(new Object[]{
+                    listagem.get(i).getId(),
+                    listagem.get(i).getNome(),
+                    listagem.get(i).getValor(),
+                    listagem.get(i).getStatus()
+                });
+            }
 
-        });
+        } catch (Exception e) {
+
+            JOptionPane.showMessageDialog(
+                this,
+                "Erro ao listar produtos: " + e.getMessage()
+            );
+
+        }
     }
+
 }
-} 
     
